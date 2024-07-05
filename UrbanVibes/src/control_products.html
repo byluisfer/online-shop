@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="output.css" rel="stylesheet">
+    <link href="https://unpkg.com/flowbite@1.5.2/dist/flowbite.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/flowbite@1.5.2/dist/flowbite.min.js"></script>
+    <script src="https://kit.fontawesome.com/ebec5f380e.js" crossorigin="anonymous"></script>
+    <title>UrbanVibes</title>
+</head>
+<body>
+    <!-- Template from Flowbite: https://flowbite.com/docs/components/navbar/ -->
+    <nav class="bg-white dark:bg-gray-900">
+      <div class="max-w-screen-xl mx-auto p-4 flex items-center justify-between">
+          
+          <a href="index.html" class="flex items-center space-x-3 rtl:space-x-reverse">
+              <img src="./photos/logo.png" class="h-20" alt="UrbanVibes Logo" />
+          </a>
+          <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+              <button type="button" class="h-24 w-24 flex items-center justify-center text-orange-500" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                  <span class="sr-only">Open user menu</span>
+                  <i class="fa-solid fa-circle-user fa-2x"></i>
+              </button>
+              <!-- Dropdown menu -->
+              <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
+                <ul class="py-2" aria-labelledby="user-menu-button">
+                  <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100" onclick="window.location.href='login.html'">Abmelden</a>
+                  </li>
+                </ul>
+              </div>
+              <button data-collapse-toggle="navbar-user" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                </svg>
+            </button>
+          </div>
+      </div>
+  </nav>
+
+    <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
+        <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
+            <button type="button" id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal"
+                class="flex items-center justify-center w-full mb-10 px-4 py-2 text-sm font-medium text-white rounded-lg bg-yellow-500 md:w-auto" onclick="openCreateModal()">
+                <i class="fa-solid fa-plus mr-2"></i>
+                Produkt erstellen
+            </button>
+
+            <div id="defaultModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+                <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+                    <!-- Modal content -->
+                    <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+                        <!-- Modal header -->
+                        <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                            <h3 id="modalTitle" class="text-lg font-semibold text-gray-900 dark:text-white">
+                                Neue produkt erstellen
+                            </h3>
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 011.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <form id="createProductForm">
+                          <input type="hidden" id="productId" value="">
+                          <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                              <div>
+                                  <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                                  <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required>
+                              </div>
+                              <div>
+                                  <label for="price" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Preis</label>
+                                  <input type="number" name="price" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product price" required>
+                              </div>
+                              <div>
+                                  <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategorie</label>
+                                  <select id="category" name="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
+                                      <!-- Las categorías se cargarán aquí dinámicamente -->
+                                  </select>
+                              </div>
+                              <div>
+                                  <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image</label>
+                                  <input type="file" name="image" id="image" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                              </div>
+                          </div>
+                          <button type="submit" id="submitButton" class="text-white bg-yellow-500 inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                              <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                              Add new product
+                          </button>
+                      </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white relative shadow-md sm:rounded-lg overflow-hidden">
+              <div class="overflow-x-auto">
+                  <table class="w-full text-sm text-left">
+                      <thead class="text-base text-gray-900 uppercase bg-gray-50">
+                          <tr>
+                              <th scope="col" class="px-4 py-3">Name</th>
+                              <th scope="col" class="px-4 py-3">Preis</th>
+                              <th scope="col" class="px-4 py-3">Kategorie</th>
+                              <th scope="col" class="px-4 py-3">Aktionen</th>
+                          </tr>
+                      </thead>
+                      <tbody id="productsTableBody">
+                          <!-- Aquí se insertarán las filas de productos -->
+                      </tbody>
+                  </table>
+              </div>
+          </div>          
+        </div>
+    </section>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@1.5.2/dist/flowbite.min.js"></script>
+<script>
+  // Add a enent to the HTML with the id "createProductForm"
+  document.getElementById('createProductForm').addEventListener('submit', async function(event) {
+    // Do not upload the website
+    event.preventDefault();
+
+    // Get the value of the "productID"
+    const productId = document.getElementById('productId').value;
+    // If that product exist, upload the products
+    if (productId) {
+      await updateProduct(productId);
+    } else {
+      // When not, create a new product
+      await createProduct();
+    }
+  });
+
+  // Asynchronous function to create a product
+  async function createProduct() {
+    // Get all values
+    const name = document.getElementById('name').value;
+    const price = parseFloat(document.getElementById('price').value);
+    const categoryId = parseInt(document.getElementById('category').value);
+    const imageFile = document.getElementById('image').files[0];
+
+    // Convert a file to Base64
+    function convertToBase64(file) {
+      return new Promise((resolve, reject) => {
+        // Instanz to read the file
+        const reader = new FileReader();
+        // Read the file and convert as URL
+        reader.readAsDataURL(file);
+        // If the read was correct
+        reader.onload = () => resolve(reader.result);
+        // When the read was incorrect
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    let imageBase64 = '';
+    // When a image exist will converto to Base64
+    if (imageFile) {
+      try {
+        // Try to convert the image to Base64
+        imageBase64 = await convertToBase64(imageFile);
+      } catch (error) {
+        console.error('Fehler beim Konvertieren des Bildes in Base64:', error);
+        alert('Fehler beim Konvertieren des Bildes in Base64.');
+        return;
+      }
+    }
+
+    // Create a object white the data from the HTML
+    const formData = {
+      name,
+      price,
+      categoryId,
+      image: imageBase64
+    };
+
+    try {
+      // Make a request to the server to crate a new product
+      const response = await fetch('http://localhost:3000/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Change the object (fromData) to a JSON cell and send to HTML
+        body: JSON.stringify(formData)
+      });
+
+      // If the awnser was correct, show a message and upload the website
+      if (response.ok) {
+        alert('Produkt erfolgreich hinzugefügt!');
+        location.reload();
+      } else {
+        const errorData = await response.json();
+        alert('Fehler: ' + errorData.error);
+      }
+    } catch (error) {
+      console.error('Fehler:', error);
+      alert('Beim Erstellung des Produkts ist ein Fehler aufgetreten.');
+    }
+  }
+
+  // Asynchronous function to update a product
+  async function updateProduct(productId) {
+    // Get all the values
+    const name = document.getElementById('name').value;
+    const price = parseFloat(document.getElementById('price').value);
+    const categoryId = parseInt(document.getElementById('category').value);
+    const imageFile = document.getElementById('image').files[0];
+
+    // KAI TOOL
+    // Convert a file to Base64
+    function convertToBase64(file) {
+      return new Promise((resolve, reject) => {
+        // Instanz to read the file
+        const reader = new FileReader();
+        // Read the file and convert as URL
+        reader.readAsDataURL(file);
+        // If the read was correct
+        reader.onload = () => resolve(reader.result);
+        // When the read was incorrect
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    // KAI TOOL
+    let imageBase64 = '';
+    // When a image exist will converto to Base64
+    if (imageFile) {
+      try {
+        // Try to convert the image to Base64
+        imageBase64 = await convertToBase64(imageFile);
+      } catch (error) {
+        console.error('Fehler beim Konvertieren des Bildes in Base64:', error);
+        alert('Fehler beim Konvertieren des Bildes in Base64.');
+        return;
+      }
+    }
+
+    // Create a object white the data from the HTML
+    const formData = {
+      name,
+      price,
+      categoryId,
+      image: imageBase64
+    };
+
+    try {
+      // Make a request to the server to update the exist product
+      const response = await fetch(`http://localhost:3000/products/${productId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzIwMDAyNTM2fQ.t26_PhHPBDNHFmB0_0b69_SRPChDby3EM9y9bejiz-s`
+        },
+        // Change the object (fromData) to a JSON cell and send to HTML
+        body: JSON.stringify(formData)
+      });
+
+      // If the awnser was correct, show a message and upload the website
+      if (response.ok) {
+        alert('Produkt erfolgreich aktualisiert!');
+        location.reload();
+      } else {
+        const errorData = await response.json();
+        alert('Fehler: ' + errorData.error);
+      }
+    } catch (error) {
+      console.error('Fehler:', error);
+      alert('Beim Aktualisieren des Produkts ist ein Fehler aufgetreten.');
+    }
+  }
+
+  // Asynchronous function to get the categories
+  async function getCategories() {
+    try {
+      // Make a request to the server to get the categories
+      const response = await fetch('http://localhost:3000/categories');
+      if (response.ok) {
+        const categories = await response.json();
+        return categories;
+      } else {
+        throw new Error('Error fetching categories');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      return [];
+    }
+  }
+
+  // Asynchronous function to open the Edit Modal
+  async function openEditModal(productId) {
+    try {
+      // First load all the available categories
+      await loadCategories();
+
+      // Then get the product info
+      const response = await fetch(`http://localhost:3000/products/${productId}`, {
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzIwMDAyNTM2fQ.t26_PhHPBDNHFmB0_0b69_SRPChDby3EM9y9bejiz-s`
+        }
+      });
+
+      // If the awnser was correct, complete the fileds with the data from the products
+      if (response.ok) {
+        const product = await response.json();
+        document.getElementById('productId').value = product.id;
+        document.getElementById('name').value = product.name;
+        document.getElementById('price').value = product.price;
+        document.getElementById('category').value = product.categoryId;
+        document.getElementById('modalTitle').innerText = 'Produkt bearbeiten';
+        document.getElementById('submitButton').innerText = 'Update product';
+
+        // Show the edit modal
+        const defaultModal = document.getElementById('defaultModal');
+        defaultModal.classList.remove('hidden');
+        defaultModal.classList.add('flex');
+      } else {
+        alert('Fehler: ' + response.statusText);
+      }
+    } catch (error) {
+      console.error('Fehler:', error);
+      alert('Beim Öffnen des Bearbeitungsmodals ist ein Fehler aufgetreten.');
+    }
+  }
+
+  // Asynchronous function to see the products
+  async function seeProducts() {
+    try {
+      // Get all the categories to create a map with the cateogires on his IDs
+      const categories = await getCategories();
+      const categoryMap = categories.reduce((map, category) => {
+        map[category.id] = category.name;
+        return map;
+      }, {});
+
+      // Make a request to the server to get all products
+      const response = await fetch('http://localhost:3000/products', {
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzIwMDAyNTM2fQ.t26_PhHPBDNHFmB0_0b69_SRPChDby3EM9y9bejiz-s`
+        }
+      });
+
+      // If the awnser was correct, show all the products on the table
+      if (response.ok) {
+        const products = await response.json();
+        const productsTableBody = document.getElementById('productsTableBody');
+        productsTableBody.innerHTML = '';
+
+        products.forEach(product => {
+          const categoryName = categoryMap[product.categoryId];
+
+          const row = document.createElement('tr');
+          row.classList.add('border-b');
+
+          // Complete the row with the product data
+          row.innerHTML = `
+            <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">${product.name}</th>
+            <td class="px-4 py-3">${product.price}</td>
+            <td class="px-4 py-3">${categoryName}</td>
+            <td class="px-4 py-3">
+              <button class="edit-button text-white bg-yellow-500 font-medium rounded text-sm px-2 py-1" data-product-id="${product.id}" onclick="openEditModal(${product.id})">Bearbeiten</button>
+              <button class="delete-button text-white bg-red-500 font-medium rounded text-sm px-2 py-1" data-product-id="${product.id}" onclick="deleteProduct(${product.id})">Löschen</button>
+            </td>
+          `;
+          productsTableBody.appendChild(row);
+        });
+      } else {
+        const errorData = await response.json();
+        alert('Error: ' + errorData.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while loading the products.');
+    }
+  }
+
+  // Asynchronous function to delete a product
+  async function deleteProduct(productId) {
+    try {
+      // Make a requesto to the server to delete a product
+      const response = await fetch(`http://localhost:3000/products/${productId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzIwMDAyNTM2fQ.t26_PhHPBDNHFmB0_0b69_SRPChDby3EM9y9bejiz-s`
+        }
+      });
+
+      // If the awnser was correct, show a message and upload de products
+      if (response.ok) {
+        alert('Produkt erfolgreich gelöscht!');
+        seeProducts();
+      } else {
+        const errorData = await response.json();
+        alert('Fehler: ' + errorData.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Beim Löschen des Produkts ist ein Fehler aufgetreten.');
+    }
+  }
+
+  // Asynchronous function to open the modal to create a product
+  function openCreateModal() {
+    document.getElementById('productId').value = '';
+    document.getElementById('createProductForm').reset();
+
+    const defaultModal = document.getElementById('defaultModal');
+    defaultModal.classList.remove('hidden');
+    defaultModal.classList.add('flex');
+
+    loadCategories();
+  }
+
+  // Asynchronous function to load the categories on the selected field
+  async function loadCategories() {
+    try {
+      const categories = await getCategories();
+      const categorySelect = document.getElementById('category');
+      categorySelect.innerHTML = '';
+
+      categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.text = category.name;
+        // Add the selected category
+        categorySelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Fehler beim Laden der Kategorien:', error);
+    }
+  }
+
+  // Add a new event to load the products when the DOM are complete loaded
+  document.addEventListener('DOMContentLoaded', seeProducts);
+</script>
+</html>

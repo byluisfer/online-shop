@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="output.css" rel="stylesheet">
+    <title>UrbanVibes</title>
+</head>
+<!-- Template form Flowbite: https://flowbite.com/blocks/marketing/login/ -->
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="bg-white p-10 rounded-xl shadow-2xl">
+      <h1 class="text-4xl font-bold text-orange-500 mb-2">Anmeldung</h1>
+      <p class="text-lg font-normal mb-7 text-gray-500">Sie haben noch kein Konto? <a href="register.html" class="text-yellow-500 underline">Registrieren Sie</a></p>
+      
+      <form id="idLogin">
+        <div class="mb-5">
+          <label class="text-2xl font-normal text-gray-900">Benutzername</label>
+          <input id="username" type="text" placeholder="Geben Sie ihren Namen ein" class="w-full mt-1 px-2 py-2 border border-gray-300 rounded-lg">
+        </div>
+  
+        <div class="mb-4">
+          <label class="flex justify-between w-full text-2xl font-normal text-gray-900">Passwort <a href="reset-password.html" class="mt-2 text-right text-base font-normal text-yellow-500 underline">Passwort vergessen?</a></label>
+          <input id="password" type="password" placeholder="Geben Sie 6 Zeichen oder mehr ein" class="w-full mt-1 px-2 py-2 border border-gray-300 rounded-lg">
+        </div>
+  
+        <div class="mb-4">
+          <label class="inline-flex items-center">
+            <input type="checkbox" class="form-checkbox rounded-md text-orange-500">
+            <span class="ml-2 text-lg font-normal text-gray-500">Erinnere mich</span>
+          </label>
+        </div>
+  
+        <button type="submit" class="text-2xl w-full bg-orange-500 text-white py-2 rounded-lg">Anmeldung</button>
+      </form>
+    </div>
+</body>
+<script> // Template from the Teacher on GitHub
+    // Add advent listener to the HTML with id: "idLogin" who listen the event "submit"
+  document.getElementById('idLogin').addEventListener('submit', function(event) {
+      // Do not upload the website
+      event.preventDefault();
+      
+      // Get the value with id: "username"
+      const username = document.getElementById('username').value;
+      // Get the value with id: "password"
+      const password = document.getElementById('password').value;
+
+      // Make a request to obtain the users from the server
+      fetch('http://localhost:3000/login', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          // Change the object (username and password) to a JSON cell and send to HTML
+          body: JSON.stringify({ username, password })
+      })
+      // Process the awnser and change a JS object
+      .then(response => response.json())
+      // Manage the data from the awnser
+      .then(data => {
+          // Check if the awnser habe a token
+          if (data.token) {
+              // Save the token on the localStorage on Web browser
+              localStorage.setItem('token', data.token);
+
+              const payload = JSON.parse(atob(data.token.split('.')[1]));
+
+              // Check if the rol is "admin"
+              if (payload.role === 'admin') {
+                  // Go to the control panel
+                  window.location.href = 'control_panel.html';
+              } else {
+                  // Go to the normal site
+                  window.location.href = 'home_login.html';
+              }
+          } else {
+              document.getElementById('message').innerText = data.error || 'Fehler bei Anmeldung';
+          }
+      })
+      .catch(error => {
+          console.error('Fehler:', error);
+          document.getElementById('message').innerText = 'Ein Fehler ist aufgetreten: ' + error.message;
+      });
+  });
+</script>
+</html>
