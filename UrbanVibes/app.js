@@ -212,11 +212,11 @@ app.get("/", (req, res) => {
 app.get("/home", (req, res) => {
   res.sendFile(path.join(__dirname, "src", "home_login.html"));
 });
-app.get("/product", (req, res) => {
+app.get("/products", (req, res) => {
   res.sendFile(path.join(__dirname, "src", "products.html"));
 });
 
-app.get("/categorie", (req, res) => {
+app.get("/categories", (req, res) => {
   res.sendFile(path.join(__dirname, "src", "categories.html"));
 });
 app.get("/login", (req, res) => {
@@ -224,6 +224,10 @@ app.get("/login", (req, res) => {
 });
 app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "src", "register.html"));
+});
+
+app.get("/reset-password", (req, res) => {
+  res.sendFile(path.join(__dirname, "src", "reset_password.html"));
 });
 
 app.listen(port, () => {

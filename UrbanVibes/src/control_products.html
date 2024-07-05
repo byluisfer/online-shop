@@ -40,6 +40,8 @@
       </div>
   </nav>
 
+  <div class="absolute top-0 left-1/2 transform -translate-x-1/2 mt-5 w-full max-w-md" id="alertContainer"></div>
+
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
             <button type="button" id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal"
@@ -58,11 +60,11 @@
                                 Neue produkt erstellen
                             </h3>
                             <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">
-                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 011.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                </svg>
-                                <span class="sr-only">Close modal</span>
-                            </button>
+                              <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 011.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                              </svg>
+                              <span class="sr-only">Close modal</span>
+                          </button>                          
                         </div>
                         <!-- Modal body -->
                         <form id="createProductForm">
@@ -79,7 +81,6 @@
                               <div>
                                   <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategorie</label>
                                   <select id="category" name="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
-                                      <!-- Las categorías se cargarán aquí dinámicamente -->
                                   </select>
                               </div>
                               <div>
@@ -87,7 +88,7 @@
                                   <input type="file" name="image" id="image" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
                               </div>
                           </div>
-                          <button type="submit" id="submitButton" class="text-white bg-yellow-500 inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                          <button type="submit" id="submitButton" class="text-white bg-yellow-500 inline-flex items-center bg-primary-700 hover:bg-primary-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                               <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                               Add new product
                           </button>
@@ -108,7 +109,6 @@
                           </tr>
                       </thead>
                       <tbody id="productsTableBody">
-                          <!-- Aquí se insertarán las filas de productos -->
                       </tbody>
                   </table>
               </div>
@@ -136,71 +136,61 @@
 
   // Asynchronous function to create a product
   async function createProduct() {
-    // Get all values
     const name = document.getElementById('name').value;
     const price = parseFloat(document.getElementById('price').value);
     const categoryId = parseInt(document.getElementById('category').value);
     const imageFile = document.getElementById('image').files[0];
 
-    // Convert a file to Base64
     function convertToBase64(file) {
-      return new Promise((resolve, reject) => {
-        // Instanz to read the file
-        const reader = new FileReader();
-        // Read the file and convert as URL
-        reader.readAsDataURL(file);
-        // If the read was correct
-        reader.onload = () => resolve(reader.result);
-        // When the read was incorrect
-        reader.onerror = error => reject(error);
-      });
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
     }
 
     let imageBase64 = '';
-    // When a image exist will converto to Base64
     if (imageFile) {
-      try {
-        // Try to convert the image to Base64
-        imageBase64 = await convertToBase64(imageFile);
-      } catch (error) {
-        console.error('Fehler beim Konvertieren des Bildes in Base64:', error);
-        alert('Fehler beim Konvertieren des Bildes in Base64.');
-        return;
-      }
+        try {
+            imageBase64 = await convertToBase64(imageFile);
+        } catch (error) {
+            console.error('Fehler beim Konvertieren des Bildes in Base64:', error);
+            showAlert('Fehler beim Konvertieren des Bildes in Base64.', 'error');
+            return;
+        }
     }
 
-    // Create a object white the data from the HTML
     const formData = {
-      name,
-      price,
-      categoryId,
-      image: imageBase64
+        name,
+        price,
+        categoryId,
+        image: imageBase64
     };
 
     try {
-      // Make a request to the server to crate a new product
-      const response = await fetch('http://localhost:3000/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // Change the object (fromData) to a JSON cell and send to HTML
-        body: JSON.stringify(formData)
-      });
+        const response = await fetch('http://localhost:3000/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
 
-      // If the awnser was correct, show a message and upload the website
-      if (response.ok) {
-        alert('Produkt erfolgreich hinzugefügt!');
-        location.reload();
-      } else {
-        const errorData = await response.json();
-        alert('Fehler: ' + errorData.error);
-      }
+        if (response.ok) {
+            showAlert('Produkt erfolgreich hinzugefügt!', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } else {
+            const errorData = await response.json();
+            showAlert('Fehler: ' + errorData.error, 'error');
+        }
     } catch (error) {
-      console.error('Fehler:', error);
-      alert('Beim Erstellung des Produkts ist ein Fehler aufgetreten.');
+        console.error('Fehler:', error);
+        showAlert('Beim Erstellung des Produkts ist ein Fehler aufgetreten.', 'error');
     }
-  }
+}
 
   // Asynchronous function to update a product
   async function updateProduct(productId) {
@@ -261,15 +251,17 @@
 
       // If the awnser was correct, show a message and upload the website
       if (response.ok) {
-        alert('Produkt erfolgreich aktualisiert!');
-        location.reload();
+        showAlert('Produkt erfolgreich aktualisiert!', 'success');
+        setTimeout(() => {
+                location.reload();
+            }, 1000);
       } else {
-        const errorData = await response.json();
-        alert('Fehler: ' + errorData.error);
+            const errorData = await response.json();
+            showAlert('Fehler: ' + errorData.error, 'error');
       }
     } catch (error) {
-      console.error('Fehler:', error);
-      alert('Beim Aktualisieren des Produkts ist ein Fehler aufgetreten.');
+        console.error('Fehler:', error);
+        showAlert('Beim Aktualisieren des Produkts ist ein Fehler aufgetreten.', 'error');
     }
   }
 
@@ -381,27 +373,30 @@
   // Asynchronous function to delete a product
   async function deleteProduct(productId) {
     try {
-      // Make a requesto to the server to delete a product
-      const response = await fetch(`http://localhost:3000/products/${productId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzIwMDAyNTM2fQ.t26_PhHPBDNHFmB0_0b69_SRPChDby3EM9y9bejiz-s`
-        }
-      });
+        // Make a request to the server to delete a product
+        const response = await fetch(`http://localhost:3000/products/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzIwMDAyNTM2fQ.t26_PhHPBDNHFmB0_0b69_SRPChDby3EM9y9bejiz-s`
+            }
+        });
 
-      // If the awnser was correct, show a message and upload de products
-      if (response.ok) {
-        alert('Produkt erfolgreich gelöscht!');
-        seeProducts();
-      } else {
-        const errorData = await response.json();
-        alert('Fehler: ' + errorData.error);
-      }
+        // If the response was correct, show a success message and reload the products
+        if (response.ok) {
+            showAlert('Produkt erfolgreich gelöscht!', 'success');
+            setTimeout(() => {
+                seeProducts();
+            }, 1000);
+        } else {
+            const errorData = await response.json();
+            showAlert('Fehler: ' + errorData.error, 'error');
+        }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Beim Löschen des Produkts ist ein Fehler aufgetreten.');
+        console.error('Error:', error);
+        showAlert('Beim Löschen des Produkts ist ein Fehler aufgetreten.', 'error');
     }
   }
+
 
   // Asynchronous function to open the modal to create a product
   function openCreateModal() {
@@ -432,6 +427,20 @@
     } catch (error) {
       console.error('Fehler beim Laden der Kategorien:', error);
     }
+  }
+
+  function showAlert(message, type) {
+    const alertContainer = document.getElementById('alertContainer');
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `p-4 mb-4 text-sm rounded-lg ${type === 'success' ? 'text-gray-900 bg-green-500' : 'text-gray-900 bg-red-500'}`;
+    alertDiv.setAttribute('role', 'alert');
+    alertDiv.innerHTML = `<span class="font-medium"></span> ${message}`;
+    alertContainer.appendChild(alertDiv);
+
+    // Remove the alert after a few seconds
+    setTimeout(() => {
+        alertContainer.removeChild(alertDiv);
+    }, 3000);
   }
 
   // Add a new event to load the products when the DOM are complete loaded

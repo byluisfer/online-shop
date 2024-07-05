@@ -40,6 +40,8 @@
       </div>
   </nav>
 
+  <div class="absolute top-0 left-1/2 transform -translate-x-1/2 mt-5 w-full max-w-md" id="alertContainer"></div>
+
     <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5">
         <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
             <button type="button" id="defaultModalButton" data-modal-target="defaultModal" data-modal-toggle="defaultModal"
@@ -146,12 +148,14 @@
 
       // If the request was correct, show a alert and upload the website
       if (response.ok) {
-        alert('Kategorie erfolgreich hinzugefügt!');
-        location.reload();
+        showAlert('Kategorie erfolgreich hinzugefügt!', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
       }
     } catch (error) {
-      console.error('Fehler:', error);
-      alert('Beim Erstellung der Kategorie ist ein Fehler aufgetreten.');
+        console.error('Fehler:', error);
+        showAlert('Beim Erstellung des Kategorie ist ein Fehler aufgetreten.', 'error');
     }
   }
 
@@ -173,12 +177,14 @@
 
       // If the request was correct, show a alert and upload the website
       if (response.ok) {
-        alert('Kategorie erfolgreich aktualisiert!');
-        location.reload();
+        showAlert('Kategorie erfolgreich bearbeitet!', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
       }
     } catch (error) {
-      console.error('Fehler:', error);
-      alert('Beim Aktualisieren der Kategorie ist ein Fehler aufgetreten.');
+        console.error('Fehler:', error);
+        showAlert('Beim bearbeitung des Kategorie ist ein Fehler aufgetreten.', 'error');
     }
   }
 
@@ -193,12 +199,14 @@
 
       // If the request was correct, show a alert and upload the website
       if (response.ok) {
-        alert('Kategorie erfolgreich gelöscht!');
-        location.reload();
+        showAlert('Kategorie erfolgreich gelöscht!', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
       }
     } catch (error) {
-      console.error('Fehler:', error);
-      alert('Beim Löschen der Kategorie ist ein Fehler aufgetreten.');
+        console.error('Fehler:', error);
+        showAlert('Beim löschen des Kategorie ist ein Fehler aufgetreten.', 'error');
     }
   }
 
@@ -265,6 +273,8 @@
   function openCreateModal() {
     document.getElementById('categoryId').value = '';
     document.getElementById('categoryForm').reset();
+    document.getElementById('modalTitle').innerText = 'Neue kategorie erstellen';
+        document.getElementById('submitButton').innerText = 'Neue kategorie erstellen';
     toggleModal('defaultModal');
   }
 
@@ -274,5 +284,19 @@
     modal.classList.toggle('hidden');
     modal.classList.toggle('flex');
   }
+
+  function showAlert(message, type) {
+    const alertContainer = document.getElementById('alertContainer');
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `p-4 mb-4 text-sm rounded-lg ${type === 'success' ? 'text-gray-900 bg-green-500' : 'text-gray-900 bg-red-500'}`;
+    alertDiv.setAttribute('role', 'alert');
+    alertDiv.innerHTML = `<span class="font-medium"></span> ${message}`;
+    alertContainer.appendChild(alertDiv);
+
+    // Remove the alert after a few seconds
+    setTimeout(() => {
+        alertContainer.removeChild(alertDiv);
+    }, 3000);
+}
 </script>
 </html>
