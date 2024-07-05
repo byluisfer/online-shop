@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="output.css" rel="stylesheet">
     <title>UrbanVibes</title>
 </head>
 <!-- Template form Flowbite: https://flowbite.com/blocks/marketing/login/ -->
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+<body class="bg-gray-100 flex items-center justify-center h-screen relative">
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 mt-5 w-full max-w-md" id="alertContainer"></div>
     <div class="bg-white p-10 rounded-xl shadow-2xl">
       <h1 class="text-4xl font-bold text-orange-500 mb-2">Anmeldung</h1>
       <p class="text-lg font-normal mb-7 text-gray-500">Sie haben noch kein Konto? <a href="register.html" class="text-yellow-500 underline">Registrieren Sie</a></p>
-      
+
       <form id="idLogin">
         <div class="mb-5">
           <label class="text-2xl font-normal text-gray-900">Benutzername</label>
@@ -19,7 +21,7 @@
         </div>
   
         <div class="mb-4">
-          <label class="flex justify-between w-full text-2xl font-normal text-gray-900">Passwort <a href="reset-password.html" class="mt-2 text-right text-base font-normal text-yellow-500 underline">Passwort vergessen?</a></label>
+          <label class="flex justify-between w-full text-2xl font-normal text-gray-900">Passwort <a href="reset_password.html" class="mt-2 text-right text-base font-normal text-yellow-500 underline">Passwort vergessen?</a></label>
           <input id="password" type="password" placeholder="Geben Sie 6 Zeichen oder mehr ein" class="w-full mt-1 px-2 py-2 border border-gray-300 rounded-lg">
         </div>
   
@@ -34,15 +36,14 @@
       </form>
     </div>
 </body>
-<script> // Template from the Teacher on GitHub
-    // Add advent listener to the HTML with id: "idLogin" who listen the event "submit"
+<script>
+  // Add event listener to the HTML form with id: "idLogin" to listen for the "submit" event
   document.getElementById('idLogin').addEventListener('submit', function(event) {
-      // Do not upload the website
+      // Prevent the default form submission behavior
       event.preventDefault();
       
-      // Get the value with id: "username"
+      // Get the values of the input fields with ids "username" and "password"
       const username = document.getElementById('username').value;
-      // Get the value with id: "password"
       const password = document.getElementById('password').value;
 
       // Make a request to obtain the users from the server
@@ -51,36 +52,55 @@
           headers: {
               'Content-Type': 'application/json'
           },
-          // Change the object (username and password) to a JSON cell and send to HTML
+          // Convert the object (username and password) to a JSON string and send it to the server
           body: JSON.stringify({ username, password })
       })
-      // Process the awnser and change a JS object
+      // Process the response and convert it to a JavaScript object
       .then(response => response.json())
-      // Manage the data from the awnser
+      // Handle the data from the response
       .then(data => {
-          // Check if the awnser habe a token
+          // Check if the response contains a token
           if (data.token) {
-              // Save the token on the localStorage on Web browser
+              // Save the token in the localStorage of the web browser
               localStorage.setItem('token', data.token);
 
               const payload = JSON.parse(atob(data.token.split('.')[1]));
 
-              // Check if the rol is "admin"
-              if (payload.role === 'admin') {
-                  // Go to the control panel
-                  window.location.href = 'control_panel.html';
-              } else {
-                  // Go to the normal site
-                  window.location.href = 'home_login.html';
-              }
+              // Display success alert
+              showAlert('Erfolgreicher Login!', 'success');
+
+              // Check if the role is "admin"
+              setTimeout(() => {
+                  if (payload.role === 'admin') {
+                      // Redirect to the control panel
+                      window.location.href = 'control_panel.html';
+                  } else {
+                      // Redirect to the normal site
+                      window.location.href = 'home_login.html';
+                  }
+              }, 1000); // Delay redirection to allow alert display
           } else {
-              document.getElementById('message').innerText = data.error || 'Fehler bei Anmeldung';
+              showAlert(data.error || 'Fehler bei Anmeldung', 'error');
           }
       })
       .catch(error => {
           console.error('Fehler:', error);
-          document.getElementById('message').innerText = 'Ein Fehler ist aufgetreten: ' + error.message;
+          showAlert('Ein Fehler ist aufgetreten: ' + error.message, 'error');
       });
   });
+
+  function showAlert(message, type) {
+      const alertContainer = document.getElementById('alertContainer');
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `p-4 mb-4 text-sm rounded-lg ${type === 'success' ? 'text-gray-900 bg-green-500' : 'text-gray-900 bg-red-500'}`;
+      alertDiv.setAttribute('role', 'alert');
+      alertDiv.innerHTML = `<span class="font-medium"></span> ${message}`;
+      alertContainer.appendChild(alertDiv);
+
+      // Remove the alert after a few seconds
+      setTimeout(() => {
+          alertContainer.removeChild(alertDiv);
+      }, 3000);
+  }
 </script>
 </html>
