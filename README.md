@@ -5,7 +5,7 @@
 
 # Installation
 
-1. Module installieren wenn Sie nicht haben:
+1. Module installieren:
    `npm install`
 
 2. Server starten:
