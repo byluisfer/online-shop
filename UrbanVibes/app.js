@@ -9,6 +9,7 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 const secretKey = 'your_secret_key';
+const path = require("path");
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -203,6 +204,26 @@ app.delete('/products/:id', authenticateToken, authorizeAdmin, (req, res) => {
     }
     res.json({ message: 'Product deleted' });
   });
+});
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "src", "index.html"));
+});
+app.get("/home", (req, res) => {
+  res.sendFile(path.join(__dirname, "src", "home_login.html"));
+});
+app.get("/product", (req, res) => {
+  res.sendFile(path.join(__dirname, "src", "products.html"));
+});
+
+app.get("/categorie", (req, res) => {
+  res.sendFile(path.join(__dirname, "src", "categories.html"));
+});
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "src", "login.html"));
+});
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "src", "register.html"));
 });
 
 app.listen(port, () => {
