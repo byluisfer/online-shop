@@ -20,7 +20,7 @@ Um sich als Administrator anzumelden, verwenden Sie diese Daten:
 - **Benutzername:** `admin`
 - **Passwort:** `admin`
 
-### Endpunkte
+# Endpunkte
 
 #### Registrierung
 
